@@ -66,7 +66,7 @@ public class AccountRepository : IAccountRepository
             request.AccountName,
             request.Provider);
 
-        await GetWhitelistedAccountCollectionAs<WhitelistedAccountDto>().InsertOneAsync(dto).ConfigureAwait(false);
+        await GetWhitelistedAccountCollectionAs<WhitelistedAccountDto>().InsertOneAsync(dto);
 
         return new Success();
     }

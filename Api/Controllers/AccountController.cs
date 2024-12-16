@@ -20,6 +20,40 @@ public class AccountController : ControllerBase
         _tokenValidatorService = tokenValidatorService;
     }
 
+    [HttpPost("whitelist")]
+    public async Task<IActionResult> WhitelistAccount([FromBody] WhitelistAccountRequest request)
+    {
+        try
+        {
+            var accountIsWhitelistedResult = await _accountRepository.AccountIsWhitelisted(request);
+
+            if (accountIsWhitelistedResult.IsT1)
+            {
+                return BadRequest();
+            }
+
+            var accountAlreadyWhitelisted = accountIsWhitelistedResult.AsT0;
+
+            if (accountAlreadyWhitelisted)
+            {
+                return Ok();
+            }
+
+            var accountWhitelistedResult = await _accountRepository.WhitelistAccountAsync(request);
+
+            if (accountWhitelistedResult.IsT1)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+        catch (Exception)
+        {
+            return StatusCode(500);
+        }
+    }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
@@ -29,7 +63,7 @@ public class AccountController : ControllerBase
 
             if (tokenValidationResult.IsT1)
             {
-                return Forbid();
+                return StatusCode(403);
             }
 
             var validatedToken = tokenValidationResult.AsT0.Value;
@@ -50,7 +84,7 @@ public class AccountController : ControllerBase
 
             if (!whitelisted)
             {
-                return Forbid();
+                return StatusCode(403);
             }
 
             var registerAccountRequest = new RegisterAccountRequest(

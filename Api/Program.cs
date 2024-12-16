@@ -1,4 +1,5 @@
 
+using Api.MongoDb;
 using Api.Repositories;
 using Api.Services;
 using FluentValidation;
@@ -35,6 +36,11 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            MongoMappings.RegisterMappings(scope.ServiceProvider.GetRequiredService<IMongoDatabase>());
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
