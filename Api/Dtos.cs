@@ -1,13 +1,42 @@
+using MongoDB.Bson;
+
 namespace Api;
 
-public record AccountDto(
-    string Id,
-    string AccountName,
-    string Provider,
-    string ProviderId,
-    string Role);
+public record AccountDto
+{
+    public string Id { get; }
+    public string AccountName { get; }
+    public string Provider { get; }
+    public string ProviderId { get; }
+    public string Role { get; }
 
-public record WhitelistedAccountDto(
-    string Id,
-    string AccountName,
-    string Provider);
+    public AccountDto(
+        string accountName,
+        string provider,
+        string providerId,
+        string role)
+    {
+        Id = ObjectId.GenerateNewId().ToString();
+        AccountName = accountName;
+        Provider = provider;
+        ProviderId = providerId;
+        Role = role;
+    }
+}
+
+public record WhitelistedAccountDto
+{
+    public string Id { get; }
+    public string AccountName { get; }
+    public string Provider { get; }
+
+    public WhitelistedAccountDto(
+        string accountName,
+        string provider)
+    {
+        Id = ObjectId.GenerateNewId().ToString();
+        AccountName = accountName;
+        Provider = provider;
+    }
+}
+

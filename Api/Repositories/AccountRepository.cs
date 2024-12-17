@@ -49,20 +49,12 @@ public class AccountRepository : IAccountRepository
 
         var accountIsWhitelistedResult = await AccountIsWhitelisted(request);
 
-        if (accountIsWhitelistedResult.IsT0)
+        if (accountIsWhitelistedResult is { IsT0: true, AsT0: true })
         {
-            if (accountIsWhitelistedResult.AsT0)
-            {
-                return new Success();
-            }
+            return new Success();
         }
-        else
-        {
-            return new Error();
-        }
-
+       
         var dto = new WhitelistedAccountDto(
-            ObjectId.GenerateNewId().ToString(),
             request.AccountName,
             request.Provider);
 
@@ -82,20 +74,12 @@ public class AccountRepository : IAccountRepository
 
         var accountIsRegisteredResult = await AccountIsRegistered(request);
 
-        if (accountIsRegisteredResult.IsT0)
+        if (accountIsRegisteredResult is { IsT0: true, AsT0: true })
         {
-            if (accountIsRegisteredResult.AsT0)
-            {
-                return new Success();
-            }
+            return new Success();
         }
-        else
-        {
-            return new Error();
-        }
-
+       
         var dto = new AccountDto(
-            ObjectId.GenerateNewId().ToString(),
             request.AccountName,
             request.Provider,
             request.ProviderId,
