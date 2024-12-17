@@ -77,7 +77,7 @@ public class AccountController : ControllerBase
 
             if (accountIsWhitelistedResult.IsT1)
             {
-                return StatusCode(500);
+                return BadRequest();
             }
 
             var whitelisted = accountIsWhitelistedResult.AsT0;
@@ -97,7 +97,7 @@ public class AccountController : ControllerBase
 
             if (registerAccountResult.IsT1)
             {
-                return StatusCode(500);
+                return BadRequest();
             }
 
             return Ok(
